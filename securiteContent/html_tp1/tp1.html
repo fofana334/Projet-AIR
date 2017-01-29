@@ -1,0 +1,405 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>tp1</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-01-29"><meta name="DC.source" content="tp1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">lecture image</a></li><li><a href="#3">Change LSB</a></li><li><a href="#4">Devoir TP1</a></li><li><a href="#5">Mesure de qualit&eacute; d'image ==&gt; PSNR</a></li><li><a href="#6">Normalize Cross - correlation</a></li><li><a href="#7">Tableau Comparatif entre PSNR &amp; NCC</a></li><li><a href="#8">Fonctiom imwrite()</a></li><li><a href="#9">Test imwrite Q=90</a></li><li><a href="#10">Test imwrite Q=50</a></li><li><a href="#11">Test imwrite Q= 30</a></li></ul></div><pre class="codeinput"><span class="comment">%************************************************************************</span>
+<span class="comment">%*              Mami FOFANA M23IR</span>
+<span class="comment">%*              SECURITE TPN&deg;1</span>
+<span class="comment">%************************************************************************</span>
+
+clc
+clear <span class="string">all</span>
+close <span class="string">all</span>
+</pre><h2>lecture image<a name="2"></a></h2><p>Objective : cacher image dans une image</p><pre class="codeinput">lena   =  imread(<span class="string">'lena.jpg'</span>);
+baboon =  imread(<span class="string">'baboon.jpg'</span>);
+
+lena   = rgb2gray(lena);
+baboon = rgb2gray(baboon);
+
+lena   = double(lena);
+baboon = double(baboon);
+
+figure
+subplot(2,1,1)
+imagesc(lena);    <span class="comment">% pixel de l'image ds 0 -255</span>
+subplot(2,1,2)
+imagesc(baboon);
+colormap(gray);
+title(<span class="string">'Lena and Boboon Image '</span>)
+</pre><img vspace="5" hspace="5" src="tp1_01.png" alt=""> <h2>Change LSB<a name="3"></a></h2><p>comment peut on acceder le bit le poid le plus flaible dans l'image</p><pre class="codeinput">lenaMod2   = mod(lena,2);          <span class="comment">% modulo 2 ie reste ==&gt; lsb de lena</span>
+baboonMod2 = mod(baboon,2);
+
+lena_lsb_0 = lena - lenaMod2;
+lena_lsb_1 = lena - lenaMod2 + 1;  <span class="comment">%lena_lsb_0 + 1  ie  lsb0 -1 + 1 =&gt; lsb + 0;</span>
+
+
+baboon_lsb_0 = baboon - baboonMod2 ;
+baboon_lsb_1 = baboon - baboonMod2 + 1;
+
+figure
+<span class="comment">%lena</span>
+subplot(2,3,1)
+imagesc(lena);                  <span class="comment">% pixel de l'image ds 0 -255</span>
+subplot(2,3,2)
+imagesc(lena_lsb_0);
+subplot(2,3,3)
+imagesc(lena_lsb_1);
+
+<span class="comment">%baboon</span>
+subplot(2,3,4)
+imagesc(baboon);
+subplot(2,3,5)
+imagesc(baboon_lsb_0);
+subplot(2,3,6)
+imagesc(baboon_lsb_1);
+colormap(gray);
+</pre><img vspace="5" hspace="5" src="tp1_02.png" alt=""> <h2>Devoir TP1<a name="4"></a></h2><pre class="codeinput"><span class="comment">%lena- baboon-lsb : ie lsb de baboon dans lena</span>
+<span class="comment">%NB : baboonMod2 = lsbBaboon  &amp;&amp; lenaMod2 = lsb(lena)</span>
+
+lena_baboon_lsb  = lena   -  lenaMod2   + baboonMod2;   <span class="comment">%On soustrait lsb de lana puis ajouter lsb de baboon</span>
+baboon_lena_lsb  = baboon -  baboonMod2 + lenaMod2;     <span class="comment">%On soustrait lsb de lana puis ajouter lsb de baboon</span>
+
+
+figure
+subplot(1,2,1)
+imagesc(lena_baboon_lsb);         <span class="comment">% pixel de l'image ds 0 -255</span>
+subplot(1,2,2)
+imagesc(baboon_lena_lsb);
+colormap(gray);
+</pre><img vspace="5" hspace="5" src="tp1_03.png" alt=""> <h2>Mesure de qualit&eacute; d'image ==&gt; PSNR<a name="5"></a></h2><pre class="codeinput">H=512;
+W=H;
+PSNR_Lena            = 10.*log10((H*W*max(max(lena.^2)))./(sum(sum(lena-lena_lsb_0).^2)))
+PSNR_Baboon          = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-baboon_lsb_0).^2)))
+PSNR_lena_baboon_lsb = 10.*log10((H*W*max(max(lena.^2)))./(sum(sum(lena-lena_baboon_lsb).^2)))
+PSNR_baboon_lena_lsb = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-baboon_lena_lsb).^2)))
+PSNR_baboon_lena     = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-lena).^2)))
+PSNR_lena_baboon     = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-lena).^2)))
+<span class="comment">%Remarque: cette mesure est base sur erreur quadratique moyenne.</span>
+</pre><pre class="codeoutput">
+PSNR_Lena =
+
+   37.3923
+
+
+PSNR_Baboon =
+
+   36.6385
+
+
+PSNR_lena_baboon_lsb =
+
+   57.3047
+
+
+PSNR_baboon_lena_lsb =
+
+   56.5619
+
+
+PSNR_baboon_lena =
+
+   -1.4474
+
+
+PSNR_lena_baboon =
+
+   -1.4474
+
+</pre><h2>Normalize Cross - correlation<a name="6"></a></h2><pre class="codeinput">NCClena            = sum(sum(lena.*lena_lsb_0))./sum(sum(lena.^2))
+NCCbaboon          = sum(sum(baboon.*baboon_lsb_0))./sum(sum(baboon.^2))
+NCClena_baboon_lsb = sum(sum(lena.*lena_baboon_lsb))./sum(sum(lena.^2))
+NCCbaboon_lena_lsb = sum(sum(baboon.*baboon_lena_lsb))./sum(sum(baboon.^2))
+NCClena_baboon     = sum(sum(lena.*baboon))./sum(sum(lena.^2))
+NCCbaboon_lena     = sum(sum(baboon.*lena))./sum(sum(baboon.^2))
+</pre><pre class="codeoutput">
+NCClena =
+
+    0.9961
+
+
+NCCbaboon =
+
+    0.9965
+
+
+NCClena_baboon_lsb =
+
+    1.0000
+
+
+NCCbaboon_lena_lsb =
+
+    1.0000
+
+
+NCClena_baboon =
+
+    1.0201
+
+
+NCCbaboon_lena =
+
+    0.6924
+
+</pre><h2>Tableau Comparatif entre PSNR &amp; NCC<a name="7"></a></h2><pre class="codeinput"><span class="comment">%************************************************************************</span>
+<span class="comment">%**********    TABLEAU RECAPUTULATIF ENTRE PSNR &amp; NCC *********************</span>
+<span class="comment">%**************************************************************************</span>
+<span class="comment">%     S: lena                        **                 **               **</span>
+<span class="comment">%     Screte : lena_lsb_0            **   37.3923       **   0.9961      **</span>
+<span class="comment">%                                    **                 **               **</span>
+<span class="comment">%**************************************************************************</span>
+<span class="comment">%     S: Baboon                      **                 **               **</span>
+<span class="comment">%     Screte : baboon_lsb_0  s       **   36.6385       **   0.996       **</span>
+<span class="comment">%                                    **                 **               **</span>
+<span class="comment">%**************************************************************************</span>
+<span class="comment">%                                    **                 **               **</span>
+<span class="comment">%     S: lena                        **   57.3047       **   1.0000      **</span>
+<span class="comment">%     Screte: lalna_baboon_lsb       **                 **               **</span>
+<span class="comment">%**************************************************************************</span>
+<span class="comment">%                                    **                 **               **</span>
+<span class="comment">%     S: baboon                      **  56.5619        **   1.00        **</span>
+<span class="comment">%     Screte:baboon_lena_lsb         **                 **               **</span>
+<span class="comment">%**************************************************************************</span>
+<span class="comment">%                                    **                 **               **</span>
+<span class="comment">%     S :baboon                      **  -1.4474        **   0.6924      **</span>
+<span class="comment">%     Screte: lena                   **                 **               **</span>
+<span class="comment">%**************************************************************************</span>
+<span class="comment">%                                    **                 **               **</span>
+<span class="comment">%     S :lena                        **  -1.4474        **   1.0201      **</span>
+<span class="comment">%     Screte: baboon                 **                 **               **</span>
+<span class="comment">%**************************************************************************</span>
+</pre><h2>Fonctiom imwrite()<a name="8"></a></h2><p>imwrite(A,'Imagecompressee.jpg','quality',90); A =uint8(Image) ==&gt; en uint8 Imagecompressee.jpg : le fichier creer apres l'&eacute;xecution du programme Avec un facteur de qualite de 90</p><h2>Test imwrite Q=90<a name="9"></a></h2><pre class="codeinput">B = lena;
+imwrite(B,<span class="string">'imageCompresse.jpg'</span>,<span class="string">'quality'</span>,90)
+result = imread(<span class="string">'imageCompresse.jpg'</span>);
+figure
+imagesc(result);
+title(<span class="string">'ImageCompresse par imwrite avec quality Q=90'</span>)
+</pre><img vspace="5" hspace="5" src="tp1_04.png" alt=""> <h2>Test imwrite Q=50<a name="10"></a></h2><pre class="codeinput">C= baboon;
+imwrite(C,<span class="string">'imageCompresseQ50.jpg'</span>,<span class="string">'quality'</span>,50)
+result2 = imread(<span class="string">'imageCompresseQ50.jpg'</span>);
+figure
+imagesc(result2);
+title(<span class="string">'ImageCompresse par imwrite avec quality Q=90'</span>)
+</pre><img vspace="5" hspace="5" src="tp1_05.png" alt=""> <h2>Test imwrite Q= 30<a name="11"></a></h2><pre class="codeinput">imwrite(B,<span class="string">'imageCompresseQ30.jpg'</span>,<span class="string">'quality'</span>,30)
+result3 = imread(<span class="string">'imageCompresseQ30.jpg'</span>);
+figure
+imagesc(result3);
+title(<span class="string">'ImageCompresse par imwrite avec quality Q=90'</span>)
+</pre><img vspace="5" hspace="5" src="tp1_06.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%************************************************************************
+%*              Mami FOFANA M23IR
+%*              SECURITE TPN°1
+%************************************************************************
+
+clc
+clear all
+close all
+%% lecture image
+% Objective : cacher image dans une image
+
+lena   =  imread('lena.jpg');
+baboon =  imread('baboon.jpg');
+
+lena   = rgb2gray(lena);
+baboon = rgb2gray(baboon);
+
+lena   = double(lena);
+baboon = double(baboon);
+
+figure
+subplot(2,1,1)
+imagesc(lena);    % pixel de l'image ds 0 -255
+subplot(2,1,2)
+imagesc(baboon);
+colormap(gray);
+title('Lena and Boboon Image ')
+%% Change LSB
+% comment peut on acceder le bit le poid le plus flaible dans l'image
+lenaMod2   = mod(lena,2);          % modulo 2 ie reste ==> lsb de lena
+baboonMod2 = mod(baboon,2);
+
+lena_lsb_0 = lena - lenaMod2;
+lena_lsb_1 = lena - lenaMod2 + 1;  %lena_lsb_0 + 1  ie  lsb0 -1 + 1 => lsb + 0;
+
+
+baboon_lsb_0 = baboon - baboonMod2 ;
+baboon_lsb_1 = baboon - baboonMod2 + 1;
+
+figure
+%lena
+subplot(2,3,1)
+imagesc(lena);                  % pixel de l'image ds 0 -255
+subplot(2,3,2)
+imagesc(lena_lsb_0);
+subplot(2,3,3)
+imagesc(lena_lsb_1);
+
+%baboon
+subplot(2,3,4)
+imagesc(baboon);
+subplot(2,3,5)
+imagesc(baboon_lsb_0);
+subplot(2,3,6)
+imagesc(baboon_lsb_1);
+colormap(gray);
+
+%% Devoir TP1
+%lena- baboon-lsb : ie lsb de baboon dans lena
+%NB : baboonMod2 = lsbBaboon  && lenaMod2 = lsb(lena)
+       
+lena_baboon_lsb  = lena   -  lenaMod2   + baboonMod2;   %On soustrait lsb de lana puis ajouter lsb de baboon 
+baboon_lena_lsb  = baboon -  baboonMod2 + lenaMod2;     %On soustrait lsb de lana puis ajouter lsb de baboon 
+
+
+figure
+subplot(1,2,1)
+imagesc(lena_baboon_lsb);         % pixel de l'image ds 0 -255
+subplot(1,2,2)
+imagesc(baboon_lena_lsb);
+colormap(gray);
+
+
+%% Mesure de qualité d'image ==> PSNR
+H=512;
+W=H;
+PSNR_Lena            = 10.*log10((H*W*max(max(lena.^2)))./(sum(sum(lena-lena_lsb_0).^2)))
+PSNR_Baboon          = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-baboon_lsb_0).^2)))
+PSNR_lena_baboon_lsb = 10.*log10((H*W*max(max(lena.^2)))./(sum(sum(lena-lena_baboon_lsb).^2)))
+PSNR_baboon_lena_lsb = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-baboon_lena_lsb).^2)))
+PSNR_baboon_lena     = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-lena).^2)))
+PSNR_lena_baboon     = 10.*log10((H*W*max(max(baboon.^2)))./(sum(sum(baboon-lena).^2)))
+%Remarque: cette mesure est base sur erreur quadratique moyenne.
+
+
+%% Normalize Cross - correlation
+
+NCClena            = sum(sum(lena.*lena_lsb_0))./sum(sum(lena.^2))
+NCCbaboon          = sum(sum(baboon.*baboon_lsb_0))./sum(sum(baboon.^2))
+NCClena_baboon_lsb = sum(sum(lena.*lena_baboon_lsb))./sum(sum(lena.^2))
+NCCbaboon_lena_lsb = sum(sum(baboon.*baboon_lena_lsb))./sum(sum(baboon.^2))
+NCClena_baboon     = sum(sum(lena.*baboon))./sum(sum(lena.^2))
+NCCbaboon_lena     = sum(sum(baboon.*lena))./sum(sum(baboon.^2))
+
+%% Tableau Comparatif entre PSNR & NCC
+%************************************************************************
+%**********    TABLEAU RECAPUTULATIF ENTRE PSNR & NCC *********************
+%**************************************************************************
+%     S: lena                        **                 **               **
+%     Screte : lena_lsb_0            **   37.3923       **   0.9961      **
+%                                    **                 **               **
+%**************************************************************************
+%     S: Baboon                      **                 **               **
+%     Screte : baboon_lsb_0  s       **   36.6385       **   0.996       **
+%                                    **                 **               **
+%**************************************************************************
+%                                    **                 **               **
+%     S: lena                        **   57.3047       **   1.0000      **
+%     Screte: lalna_baboon_lsb       **                 **               **
+%**************************************************************************
+%                                    **                 **               **
+%     S: baboon                      **  56.5619        **   1.00        **
+%     Screte:baboon_lena_lsb         **                 **               **
+%**************************************************************************
+%                                    **                 **               **
+%     S :baboon                      **  -1.4474        **   0.6924      **
+%     Screte: lena                   **                 **               **
+%**************************************************************************
+%                                    **                 **               **
+%     S :lena                        **  -1.4474        **   1.0201      **
+%     Screte: baboon                 **                 **               **
+%**************************************************************************
+
+%% Fonctiom imwrite()
+% imwrite(A,'Imagecompressee.jpg','quality',90);
+% A =uint8(Image) ==> en uint8
+% Imagecompressee.jpg : le fichier creer apres l'éxecution du programme
+% Avec un facteur de qualite de 90 
+
+%% Test imwrite Q=90
+B = lena;
+imwrite(B,'imageCompresse.jpg','quality',90)
+result = imread('imageCompresse.jpg');
+figure
+imagesc(result);
+title('ImageCompresse par imwrite avec quality Q=90')
+
+%% Test imwrite Q=50
+C= baboon;
+imwrite(C,'imageCompresseQ50.jpg','quality',50)
+result2 = imread('imageCompresseQ50.jpg');
+figure
+imagesc(result2);
+title('ImageCompresse par imwrite avec quality Q=90')
+%% Test imwrite Q= 30
+imwrite(B,'imageCompresseQ30.jpg','quality',30)
+result3 = imread('imageCompresseQ30.jpg');
+figure
+imagesc(result3);
+title('ImageCompresse par imwrite avec quality Q=90')
+##### SOURCE END #####
+--></body></html>
